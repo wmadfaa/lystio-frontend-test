@@ -8,6 +8,7 @@ import DrawControl from "./draw-control";
 import ListingsMarkers from "./listtings-markers";
 
 import "mapbox-gl/dist/mapbox-gl.css";
+import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 
 function Map() {
   const [viewport, setViewport] = useState<ViewState>();
