@@ -7,6 +7,7 @@ import PropertyListingCard from "./property-listing-card";
 import { useTenementSearch } from "@/data/tenement-search";
 import { useSearchParams } from "next/navigation";
 import { MAX_PRICE, MIN_PRICE, parsePriceRangeParam } from "@/lib/utils";
+import clsx from "clsx";
 
 function PropertyListingCards() {
   const searchParams = useSearchParams();
@@ -19,7 +20,11 @@ function PropertyListingCards() {
     },
   });
 
-  const listings = useMemo(() => data?.flatMap((d) => d.res), [data]);
+  const listings = useMemo(
+    () => data?.flatMap((d) => d.res).filter(Boolean),
+    [data],
+  );
+
   const hasMore = useMemo(() => {
     const paging = data?.at(-1)?.paging;
     if (!paging) return null;
@@ -28,7 +33,11 @@ function PropertyListingCards() {
   }, [data]);
   console.log(listings);
   return (
-    <>
+    <div
+      className={clsx("flex flex-col gap-8 p-5", {
+        "opacity-50": isValidating,
+      })}
+    >
       {listings?.map((listing) => (
         <PropertyListingCard key={listing.id} listing={listing} />
       ))}
@@ -40,7 +49,7 @@ function PropertyListingCards() {
       >
         loading ...
       </InView>
-    </>
+    </div>
   );
 }
 

@@ -1,30 +1,30 @@
 import useSWRInfinite, { SWRInfiniteKeyLoader } from "swr/infinite";
 import { fetcher } from "../common/fetcher";
 import {
-  TenementSearch,
-  TenementSearchSort,
-  TenementSearchPaging,
-  TenementSearchResponse,
+  TenementSearchMap,
+  TenementSearchMapPaging,
+  TenementSearchMapSort,
+  TenementSearchMapResponse,
 } from "./types";
 
 export const TENEMENT_SEARCH_ENDPOINT = "tenement/search";
 
-export const TENEMENT_SEARCH_SORT: TenementSearchSort = {
+export const TENEMENT_SEARCH_MAP_SORT: TenementSearchMapSort = {
   rent: null,
   distance: null,
 };
 
-export const TENEMENT_SEARCH_PAGING: TenementSearchPaging = {
+export const TENEMENT_SEARCH_MAP_PAGING: TenementSearchMapPaging = {
   pageSize: 10,
   page: 0,
 };
 
 export async function postTenementSearch({
   filter,
-  sort = TENEMENT_SEARCH_SORT,
-  paging = TENEMENT_SEARCH_PAGING,
-}: TenementSearch) {
-  return fetcher<TenementSearchResponse>(TENEMENT_SEARCH_ENDPOINT, {
+  sort = TENEMENT_SEARCH_MAP_SORT,
+  paging = TENEMENT_SEARCH_MAP_PAGING,
+}: TenementSearchMap) {
+  return fetcher<TenementSearchMapResponse>(TENEMENT_SEARCH_ENDPOINT, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -35,7 +35,7 @@ export async function postTenementSearch({
 }
 
 export const getUseTenementSearchKey =
-  (query: TenementSearch): SWRInfiniteKeyLoader<TenementSearchResponse> =>
+  (query: TenementSearchMap): SWRInfiniteKeyLoader<TenementSearchMapResponse> =>
   (index, prevData) => {
     if (!prevData) return [TENEMENT_SEARCH_ENDPOINT, query];
 
@@ -50,11 +50,11 @@ export const getUseTenementSearchKey =
     ];
   };
 
-export function useTenementSearch(query: TenementSearch) {
+export function useTenementSearchMap(query: TenementSearchMap) {
   return useSWRInfinite(
     getUseTenementSearchKey(query),
-    ([, q]: [string, TenementSearch]) => postTenementSearch(q),
+    ([, q]: [string, TenementSearchMap]) => postTenementSearch(q),
   );
 }
 
-export default useTenementSearch;
+export default useTenementSearchMap;

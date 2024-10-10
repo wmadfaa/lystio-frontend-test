@@ -12,9 +12,7 @@ function Listings() {
           <Settings2Icon className="h-6 w-6 text-[#2D264B]" />
         </Button>
       </div>
-      <div className="flex flex-col gap-8 p-5">
-        <PropertyListingCards />
-      </div>
+      <PropertyListingCards />
     </div>
   );
 }
