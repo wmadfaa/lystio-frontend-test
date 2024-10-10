@@ -11,18 +11,31 @@ import { ChevronDownIcon } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { useRouter, useSearchParams } from "next/navigation";
+import { debounce } from "lodash";
+import { parsePriceRangeParam, MIN_PRICE, MAX_PRICE } from "@/lib/utils";
 
 function PriceFilter() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState<number[] | undefined>(undefined);
-
-  const handleInitalPopoverOpen = (nvalue: boolean) => {
-    if (nvalue && !value) setValue([0, 100]);
-  };
+  const [value, setValue] = useState<number[] | undefined>(() =>
+    parsePriceRangeParam(searchParams.get("price")),
+  );
 
   const togglePopover = (nvalue: boolean) => {
-    handleInitalPopoverOpen(nvalue);
     setOpen(nvalue);
+  };
+
+  const updatePriceSearchparam = debounce((range: [number, number]) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("price", range.join("-"));
+    router.push(`?${params.toString()}`);
+  }, 600);
+
+  const handleChannge = (range: [number, number]) => {
+    setValue(range);
+    updatePriceSearchparam(range);
   };
 
   const handleReset = () => {
@@ -39,7 +52,7 @@ function PriceFilter() {
             {value && (
               <>
                 :{" "}
-                <span className="inline-block w-auto min-w-[70px] text-balance text-muted-foreground">
+                <span className="inline-block w-auto min-w-[100px] text-balance text-muted-foreground">
                   {value.join(" - ")}
                 </span>
               </>
@@ -50,16 +63,16 @@ function PriceFilter() {
       </PopoverTrigger>
       <PopoverContent>
         <div>
-          <h6 className="text-caption font-poppins">Price</h6>
+          <h6 className="font-poppins text-caption">Price</h6>
           <div className="flex flex-col gap-4">
             <Slider
               thumbs={2}
-              defaultValue={[0, 100]}
               value={value}
-              onValueChange={setValue}
-              min={0}
-              max={100}
-              step={1}
+              defaultValue={[MIN_PRICE, MAX_PRICE]}
+              onValueChange={handleChannge}
+              min={MIN_PRICE}
+              max={MAX_PRICE}
+              step={Math.floor(MAX_PRICE / 100)}
               className="py-4"
             />
             <div className="flex items-center gap-8">
@@ -70,9 +83,12 @@ function PriceFilter() {
                   placeholder="0,00"
                   step={1}
                   onChange={(e) =>
-                    setValue([Number(e.target.value), value?.[1] ?? 100])
+                    handleChannge([
+                      Number(e.target.value),
+                      value?.[1] ?? MAX_PRICE,
+                    ])
                   }
-                  min={0}
+                  min={MIN_PRICE}
                   value={Number(value?.[0]).toFixed(2)}
                 />
               </div>
@@ -83,9 +99,9 @@ function PriceFilter() {
                   placeholder="100,00"
                   step={1}
                   onChange={(e) =>
-                    setValue([value?.[0] ?? 0, Number(e.target.value)])
+                    setValue([value?.[0] ?? MIN_PRICE, Number(e.target.value)])
                   }
-                  min={0}
+                  min={MIN_PRICE}
                   value={Number(value?.[1]).toFixed(2)}
                 />
               </div>

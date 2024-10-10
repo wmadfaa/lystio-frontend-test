@@ -20,8 +20,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Property } from "../../../data/tenement-search/types";
 import clsx from "clsx";
+import { Property } from "@/data/tenement-search/types";
 
 function PropertyListingCard({ listing }: { listing: Property }) {
   return (
@@ -165,7 +165,7 @@ function PropertyListingCard({ listing }: { listing: Property }) {
           <div className="inline-flex items-center justify-start self-stretch">
             <Carousel
               opts={{ align: "start" }}
-              className="relative h-[131px] max-w-[744px] p-1"
+              className="relative h-[131px] w-full max-w-[744px] p-1"
             >
               <CarouselContent className="-ml-2">
                 {listing.tenements.map((tenement) => (

@@ -5,26 +5,28 @@ import { InView } from "react-intersection-observer";
 
 import PropertyListingCard from "./property-listing-card";
 import { useTenementSearch } from "@/data/tenement-search";
-import { TenementSearchFilter } from "@/data/tenement-search/types";
+import { useSearchParams } from "next/navigation";
+import { MAX_PRICE, MIN_PRICE, parsePriceRangeParam } from "@/lib/utils";
 
-interface PropertyListingCardsProps {
-  filter?: TenementSearchFilter;
-}
-
-function PropertyListingCards({
-  filter = { rent: [100, 10000] },
-}: PropertyListingCardsProps) {
+function PropertyListingCards() {
+  const searchParams = useSearchParams();
   const { data, isLoading, isValidating, size, setSize } = useTenementSearch({
-    filter,
+    filter: {
+      rent: parsePriceRangeParam(searchParams.get("price"), [
+        MIN_PRICE,
+        MAX_PRICE,
+      ]) as [number, number],
+    },
   });
 
   const listings = useMemo(() => data?.flatMap((d) => d.res), [data]);
   const hasMore = useMemo(() => {
-    if (!data) return null;
-    const { page, pageCount } = data.at(-1)!.paging;
+    const paging = data?.at(-1)?.paging;
+    if (!paging) return null;
+    const { page, pageCount } = paging;
     return page < pageCount;
   }, [data]);
-
+  console.log(listings);
   return (
     <>
       {listings?.map((listing) => (
