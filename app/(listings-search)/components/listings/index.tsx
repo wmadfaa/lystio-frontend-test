@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { Settings2Icon } from "lucide-react";
 import PropertyListingCards from "./items/property-listing-cards";
@@ -12,7 +12,9 @@ function Listings() {
           <Settings2Icon className="h-6 w-6 text-[#2D264B]" />
         </Button>
       </div>
-      <PropertyListingCards />
+      <Suspense>
+        <PropertyListingCards />
+      </Suspense>
     </div>
   );
 }

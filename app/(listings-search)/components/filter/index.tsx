@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 
 import { Settings2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ import ApartmentFilter from "./items/apartment-filter";
 import BathroomsFilter from "./items/bathrooms-filter";
 import LivingRoomsFilter from "./items/living-rooms-filter";
 import GlobalSearchFilter from "./items/global-search-filter";
+import PriceFilterButton from "./items/price-filter-button";
 
 function Filter() {
   return (
@@ -20,7 +21,9 @@ function Filter() {
       <BathroomsFilter />
       <LivingRoomsFilter />
       <PropertyTypeFilter />
-      <PriceFilter />
+      <Suspense fallback={<PriceFilterButton price={undefined} disabled />}>
+        <PriceFilter />
+      </Suspense>
       <Button variant="ghost" size="sm">
         All <Settings2Icon className="ml-2.5 h-6 w-6" />
       </Button>

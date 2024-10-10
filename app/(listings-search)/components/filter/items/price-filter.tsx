@@ -7,13 +7,13 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { ChevronDownIcon } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useRouter, useSearchParams } from "next/navigation";
 import { debounce } from "lodash";
 import { parsePriceRangeParam, MIN_PRICE, MAX_PRICE } from "@/lib/utils";
+import PriceFilterButton from "./price-filter-button";
 
 function PriceFilter() {
   const router = useRouter();
@@ -27,9 +27,13 @@ function PriceFilter() {
     setOpen(nvalue);
   };
 
-  const updatePriceSearchparam = debounce((range: [number, number]) => {
+  const updatePriceSearchparam = debounce((range?: [number, number]) => {
     const params = new URLSearchParams(searchParams.toString());
-    params.set("price", range.join("-"));
+    if (range) {
+      params.set("price", range.join("-"));
+    } else {
+      params.delete("price");
+    }
     router.push(`?${params.toString()}`);
   }, 600);
 
@@ -40,26 +44,17 @@ function PriceFilter() {
 
   const handleReset = () => {
     setValue(undefined);
+    updatePriceSearchparam(undefined);
     setOpen(false);
   };
 
   return (
     <Popover open={open} onOpenChange={togglePopover}>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="sm">
-          <span>
-            Price
-            {value && (
-              <>
-                :{" "}
-                <span className="inline-block w-auto min-w-[100px] text-balance text-muted-foreground">
-                  {value.join(" - ")}
-                </span>
-              </>
-            )}
-          </span>
-          <ChevronDownIcon className="ml-2.5 h-5 w-5" />
-        </Button>
+        <div>
+          <PriceFilterButton price={value} />
+          <span className="sr-only">price filter action trigger</span>
+        </div>
       </PopoverTrigger>
       <PopoverContent>
         <div>

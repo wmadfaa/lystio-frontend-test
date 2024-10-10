@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, Suspense } from "react";
 import Mapbox, { ViewState } from "react-map-gl";
 import { Feature } from "geojson";
 
@@ -53,7 +53,9 @@ function Map() {
         mapStyle="mapbox://styles/mapbox/dark-v11"
         mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
       >
-        <ListingsMarkers />
+        <Suspense>
+          <ListingsMarkers />
+        </Suspense>
         <DrawControl
           position="top-left"
           displayControlsDefault={false}

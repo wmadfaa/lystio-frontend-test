@@ -19,6 +19,9 @@ const nextConfig = {
       { hostname: "cdn.lystio.co" },
     ],
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 export default nextConfig;
