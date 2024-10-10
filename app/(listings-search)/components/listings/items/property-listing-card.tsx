@@ -20,7 +20,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Property } from "../types";
+import { Property } from "../../../data/tenement-search/types";
 import clsx from "clsx";
 
 function PropertyListingCard({ listing }: { listing: Property }) {
@@ -189,7 +189,7 @@ function PropertyListingCard({ listing }: { listing: Property }) {
                         </div>
                       )}
                       <div className="inline-flex flex-col items-start justify-start gap-4 px-1">
-                        <div className="text-caption h-[18px] self-stretch text-black">
+                        <div className="h-[18px] self-stretch text-caption text-black">
                           {tenement.title}
                         </div>
                         <div className="inline-flex items-center justify-start gap-2 whitespace-nowrap opacity-60">
@@ -205,7 +205,7 @@ function PropertyListingCard({ listing }: { listing: Property }) {
                             {tenement.size}m²
                           </span>
                         </div>
-                        <div className="text-caption self-stretch text-black">
+                        <div className="self-stretch text-caption text-black">
                           {tenement.rent} €
                         </div>
                       </div>
@@ -237,7 +237,7 @@ function PropertyListingCard({ listing }: { listing: Property }) {
                     .toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <div className="text-caption max-w-[160px] truncate text-black">
+              <div className="max-w-[160px] truncate text-caption text-black">
                 {listing.owner.name}
               </div>
             </div>

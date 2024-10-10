@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 
 import Header from "@/components/header";
-import Filter from "@/components/filter";
-import "mapbox-gl/dist/mapbox-gl.css";
 
 import "./globals.css";
 
@@ -21,7 +19,6 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: "Lystio",
-  description: "",
 };
 
 interface Props {
@@ -36,7 +33,6 @@ function RootLayout({ children }: Props) {
     >
       <body className="flex h-screen w-screen flex-col overflow-hidden">
         <Header />
-        <Filter />
         {children}
       </body>
     </html>

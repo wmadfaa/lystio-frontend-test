@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Settings2Icon } from "lucide-react";
 import PropertyListingCards from "./items/property-listing-cards";
@@ -13,9 +13,7 @@ function Listings() {
         </Button>
       </div>
       <div className="flex flex-col gap-8 p-5">
-        <Suspense fallback={<div>Loading...</div>}>
-          <PropertyListingCards />
-        </Suspense>
+        <PropertyListingCards />
       </div>
     </div>
   );

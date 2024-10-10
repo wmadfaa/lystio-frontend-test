@@ -1,8 +1,8 @@
-import Listings from "@/components/listings";
+import Listings from "./components/listings";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
-const Map = dynamic(() => import("@/components/map"), {
+const Map = dynamic(() => import("./components/map"), {
   loading: () => <div>Loading map...</div>,
   ssr: false,
 });
