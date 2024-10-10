@@ -7,7 +7,7 @@ import {
   TenementSearchMapResponse,
 } from "./types";
 
-export const TENEMENT_SEARCH_ENDPOINT = "tenement/search";
+export const TENEMENT_SEARCH_MAP_ENDPOINT = "tenement/search/map";
 
 export const TENEMENT_SEARCH_MAP_SORT: TenementSearchMapSort = {
   rent: null,
@@ -24,25 +24,25 @@ export async function postTenementSearch({
   sort = TENEMENT_SEARCH_MAP_SORT,
   paging = TENEMENT_SEARCH_MAP_PAGING,
 }: TenementSearchMap) {
-  return fetcher<TenementSearchMapResponse>(TENEMENT_SEARCH_ENDPOINT, {
+  return fetcher(TENEMENT_SEARCH_MAP_ENDPOINT, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       accept: "application/json",
     },
     body: JSON.stringify({ filter, sort, paging }),
-  });
+  }).then((res) => ({ res }) as TenementSearchMapResponse);
 }
 
 export const getUseTenementSearchKey =
   (query: TenementSearchMap): SWRInfiniteKeyLoader<TenementSearchMapResponse> =>
   (index, prevData) => {
-    if (!prevData) return [TENEMENT_SEARCH_ENDPOINT, query];
+    if (!prevData) return [TENEMENT_SEARCH_MAP_ENDPOINT, query];
 
     if (prevData.paging.page >= prevData.paging.pageCount) return null;
 
     return [
-      TENEMENT_SEARCH_ENDPOINT,
+      TENEMENT_SEARCH_MAP_ENDPOINT,
       {
         ...query,
         paging: { page: index + 1, pageSize: prevData.paging.pageSize },

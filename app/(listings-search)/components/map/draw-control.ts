@@ -1,6 +1,7 @@
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import { Feature } from "geojson";
 import { useControl, IControl } from "react-map-gl";
+import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 
 import type { ControlPosition, MapInstance } from "react-map-gl";
 
